@@ -1,4 +1,4 @@
-[Minecraft Server](https://www.minecraft.net/en-us/download/server) auto-update script run from weekly cron.
+[Minecraft Server](https://www.minecraft.net/en-us/download/server) auto-update script run from weekly cron. Script uses Python requests and Beautiful Soup to check the [Minecraft Server](https://www.minecraft.net/en-us/download/server) download page for a new version and if it exists, download it, archive the old server, and create a symbolic link to the new version.
 
 
 ```bash
