@@ -47,9 +47,9 @@ def download_file(url, path):
 
 def main():
     download_page_url = "https://www.minecraft.net/en-us/download/server"
-    server_dir = "/home/azureuser/MC-test"
+    server_dir = "/home/azureuser/MC"
     old_jars_dir = os.path.join(server_dir, "old-jars")
-    log_path = "/home/azureuser/MC-test/logs"
+    log_path = "/home/azureuser/MC/logs"
     current_version_link = os.path.join(server_dir, "server.jar")
     setup_logging(log_path, "minecraft-update.log")
 
