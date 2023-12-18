@@ -1,0 +1,1 @@
+Minecraft auto update script run from weekly cron.
