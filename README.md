@@ -88,3 +88,21 @@ Check the service status:
 ```bash
 sudo systemctl status minecraft.service
 ```
+
+## Minecraft Server Backup Script
+
+The `backup_minecraft.sh` script automates the process of backing up your Minecraft server world. The script, located at `/home/azureuser/MC/backup_minecraft.sh`, performs the following actions:
+
+1. Stops the Minecraft server.
+2. Creates a compressed backup of the world in a specified directory.
+3. Restarts the Minecraft server.
+4. Removes backups older than a specified number of days.
+
+### Automated Backup via Cron Job
+
+To automate this backup process, a cron job is set up as follows:
+
+```cron
+0 5 * * * /home/azureuser/MC/backup_minecraft.sh >/dev/null 2>&1
+``````
+This cron job schedules the script to run every day at 5:00 AM, ensuring daily backups of your Minecraft world. The output is redirected to suppress any standard output or errors, making the process silent however the details are logged to `/home/azureuser/MC/logs/minecraft_backup.log`.
