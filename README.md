@@ -2,7 +2,7 @@
 
 This repository hosts scripts for managing and updating a Minecraft server, ensuring smooth operation and easy maintenance.
 
-## Minecraft Server Auto-Updater [update_minecraft_server.py](update_minecraft_server.py)
+## Minecraft Server Auto-Updater : [update_minecraft_server.py](update_minecraft_server.py)
 
 Automatically updates the Minecraft server. The script checks for new versions on the official [Minecraft Server download page](https://www.minecraft.net/en-us/download/server), downloads new releases, archives old versions, and updates the server.
 
@@ -16,7 +16,7 @@ Run as a weekly cron job. Example (Every Saturday at 08:00):
 ```bash
 0 8 * * 6 /usr/bin/python3 /home/azureuser/update_minecraft_server.py
 ```
-## Minecraft Server Management [mc.sh](mc.sh)
+## Minecraft Server Management : [mc.sh](mc.sh)
 [mc.sh](mc.sh) is a script for initializing and managing a Minecraft server with optimized settings.
 
 ### Features
@@ -58,7 +58,7 @@ sudo systemctl enable minecraft.service
 sudo systemctl start minecraft.service
 ```
 
-## Minecraft Server Backup [backup_minecraft.sh](backup_minecraft.sh)
+## Minecraft Server Backup : [backup_minecraft.sh](backup_minecraft.sh)
 Automates the backup process for the Minecraft server world.
 
 ### Features
