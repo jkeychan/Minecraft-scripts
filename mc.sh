@@ -20,28 +20,28 @@ start_minecraft_server() {
         exit 1
     fi
 
-    # Java arguments
+    # Java arguments for server performance tuning
     local java_args=(
-        -Xms6G
-        -Xmx6G
-        -XX:+UseG1GC
-        -XX:+ParallelRefProcEnabled
-        -XX:MaxGCPauseMillis=200
-        -XX:+UnlockExperimentalVMOptions
-        -XX:+DisableExplicitGC
-        -XX:+AlwaysPreTouch
-        -XX:G1NewSizePercent=30
-        -XX:G1MaxNewSizePercent=40
-        -XX:G1HeapRegionSize=8M
-        -XX:G1ReservePercent=20
-        -XX:G1HeapWastePercent=5
-        -XX:G1MixedGCCountTarget=4
-        -XX:InitiatingHeapOccupancyPercent=15
-        -XX:G1MixedGCLiveThresholdPercent=90
-        -XX:G1RSetUpdatingPauseTimePercent=5
-        -XX:SurvivorRatio=32
-        -XX:+PerfDisableSharedMem
-        -XX:MaxTenuringThreshold=1
+        -Xms6G # Initial heap size
+        -Xmx6G # Maximum heap size
+        -XX:+UseG1GC # Use the G1 Garbage Collector
+        -XX:+ParallelRefProcEnabled # Enable parallel reference processing for G1 GC
+        -XX:MaxGCPauseMillis=200 # Target for maximum GC pause time
+        -XX:+UnlockExperimentalVMOptions # Unlock experimental options for the JVM
+        -XX:+DisableExplicitGC # Disable calls to System.gc()
+        -XX:+AlwaysPreTouch # Pre-touch memory pages used by the JVM heap
+        -XX:G1NewSizePercent=30 # Percentage of the heap to use as the minimum for the young generation
+        -XX:G1MaxNewSizePercent=40 # Maximum percentage of heap to use for the young generation
+        -XX:G1HeapRegionSize=8M # Set the size of a G1 region
+        -XX:G1ReservePercent=20 # Reserve percentage of heap for accommodating young generation
+        -XX:G1HeapWastePercent=5 # Percentage of heap that can be wasted
+        -XX:G1MixedGCCountTarget=4 # Number of mixed GCs after an evacuation pause
+        -XX:InitiatingHeapOccupancyPercent=15 # Percentage of the heap occupancy to trigger a GC cycle
+        -XX:G1MixedGCLiveThresholdPercent=90 # Threshold for mixed GC live objects
+        -XX:G1RSetUpdatingPauseTimePercent=5 # Time spent on updating the remembered sets
+        -XX:SurvivorRatio=32 # Ratio of eden/survivor space size
+        -XX:+PerfDisableSharedMem # Disable use of shared memory
+        -XX:MaxTenuringThreshold=1 # Maximum value for tenuring threshold
     )
 
     # Start the Minecraft server inside a screen session
