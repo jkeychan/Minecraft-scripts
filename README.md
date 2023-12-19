@@ -1,66 +1,41 @@
-# Minecraft Server Auto-Updater
+# Minecraft Server Scripts
 
-## `update_minecraft_server.py`
-[Minecraft Server](https://www.minecraft.net/en-us/download/server) auto-update script run from weekly cron. The `update_minecraft_server.py` script uses Python Requests and Beautiful Soup to check the [Minecraft Server](https://www.minecraft.net/en-us/download/server) download page for a new version and if it exists, download it, archive the old server, and create a symbolic link to the new version. This will automatically update your Linux Minecraft server.
+This repository hosts scripts for managing and updating a Minecraft server, ensuring smooth operation and easy maintenance.
 
-## Notes:
+## Minecraft Server Auto-Updater [update_minecraft_server.py](update_minecraft_server.py)
 
-- The script uses the username `azureuser`
-- The server directory is `/home/azureuser/MC`
-- Under `/home/azureuser/MC` are `logs/` and `old-jars/` directories
-- You will need to manually restart the server after the upgrade if it occurs (`cron` is the simplest way)
-
-
-
-
-```bash
-0 8 * * 6 /usr/bin/python3 /home/azueruser/update_minecraft_server.py
-```
-This cron job breaks down as follows:
-
-At 8:00 AM (0 8) on every day of the month (\*), in every month (\*), on Saturday (6) run this command:
-
-```bash
-/usr/bin/python3 /home/azureuser/update_minecraft_server.py
-```
-
-
-# Minecraft Server Management Scripts
-
-This repository contains various scripts for managing a Minecraft server. One of the key scripts is `mc.sh`, which is designed to efficiently start and manage a Minecraft server.
-
-## mc.sh Script
-
-The `mc.sh` script initializes a Minecraft server with optimized Java settings for performance. It ensures that necessary files are present and launches the server in a screen session for easy management.
+Automatically updates the Minecraft server. The script checks for new versions on the official [Minecraft Server download page](https://www.minecraft.net/en-us/download/server), downloads new releases, archives old versions, and updates the server.
 
 ### Features
-
-- Optimized Java arguments for server performance
-- Checks for the existence of the Java binary and server JAR
-- Runs the server in a screen session
+- Checks for new Minecraft server versions.
+- Archives old versions in `old-jars/`.
+- Doesn't restart the server. The [backup](backup_minecraft.sh) cron job will eventually restart and the new version will initialize.
 
 ### Usage
+Run as a weekly cron job. Example (Every Saturday at 08:00):
+```bash
+0 8 * * 6 /usr/bin/python3 /home/azureuser/update_minecraft_server.py
+```
+## Minecraft Server Management [mc.sh](mc.sh)
+[mc.sh](mc.sh) is a script for initializing and managing a Minecraft server with optimized settings.
 
-Give the script execute permissions:
+### Features
+- Optimized Java settings for performance.
+- Checks for Java binary and server JAR existence.
+- Manages server in a screen session.
 
-```chmod +x mc.sh```
-
-
-Run the script using:
+### Usage
+Set execute permissions and run:
 
 ```bash
+chmod +x mc.sh
 ./mc.sh
 ```
+### Systemd Integration
+To auto-start at boot and restart on failure:
 
-## Systemd Integration
-
-The `mc.sh` script can be configured to run as a systemd service, ensuring that the Minecraft server starts automatically on system boot and restarts on failure.
-
-### minecraft.service
-
-Create a systemd service file `/etc/systemd/system/minecraft.service`:
-
-```ini
+Create systemd service:
+``````
 [Unit]
 Description=Minecraft Server Launcher
 After=network.target
@@ -74,7 +49,7 @@ Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
-```
+``````
 
 Enable and start the service:
 
@@ -83,26 +58,17 @@ sudo systemctl enable minecraft.service
 sudo systemctl start minecraft.service
 ```
 
-Check the service status:
+## Minecraft Server Backup [backup_minecraft.sh](backup_minecraft.sh)
+Automates the backup process for the Minecraft server world.
 
-```bash
-sudo systemctl status minecraft.service
-```
-
-## Minecraft Server Backup Script
-
-The `backup_minecraft.sh` script automates the process of backing up your Minecraft server world. The script, located at `/home/azureuser/MC/backup_minecraft.sh`, performs the following actions:
-
-1. Stops the Minecraft server.
-2. Creates a compressed backup of the world in a specified directory.
-3. Restarts the Minecraft server.
-4. Removes backups older than a specified number of days.
-
-### Automated Backup via Cron Job
-
-To automate this backup process, a cron job is set up as follows:
+### Features
+- Stops and restarts the Minecraft server.
+- Compresses and stores world backups.
+- Configurable backup retention.
+### Usage
+Set up as a daily cron job:
 
 ```cron
 0 5 * * * /home/azureuser/MC/backup_minecraft.sh >/dev/null 2>&1
-``````
-This cron job schedules the script to run every day at 5:00 AM, ensuring daily backups of your Minecraft world. The output is redirected to suppress any standard output or errors, making the process silent however the details are logged to `/home/azureuser/MC/logs/minecraft_backup.log`.
+```
+Logs details to `/home/azureuser/MC/logs/minecraft_backup.log`.
